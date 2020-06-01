@@ -1,7 +1,6 @@
 package com.example.mc.services.exceptions;
 
 public class AuthorizationException extends RuntimeException {
-
 	private static final long serialVersionUID = 1L;
 	
 	public AuthorizationException(String msg) {
@@ -11,4 +10,5 @@ public class AuthorizationException extends RuntimeException {
 	public AuthorizationException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
+
 }

@@ -3,7 +3,6 @@ package com.example.mc.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -16,15 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.mc.domain.Cidade;
 import com.example.mc.domain.Cliente;
 import com.example.mc.domain.Endereco;
-import com.example.mc.domain.enums.Perfil;
 import com.example.mc.domain.enums.TipoCliente;
 import com.example.mc.dto.ClienteDTO;
 import com.example.mc.dto.ClienteNewDTO;
 import com.example.mc.repositories.ClienteRepository;
 import com.example.mc.repositories.EnderecoRepository;
-import com.example.mc.security.UserSS;
-import com.example.mc.services.exceptions.AuthorizationException;
 import com.example.mc.services.exceptions.DataIntegrityException;
+import com.example.mc.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class ClienteService {
@@ -39,11 +36,6 @@ public class ClienteService {
 	private EnderecoRepository enderecoRepository;
 	
 	public Cliente find(Integer id) {
-		UserSS user = UserService.authenticated();
-		if (user==null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
-			throw new AuthorizationException("Acesso negado");
-		}
-		
 		Optional<Cliente> obj = repo.findById(id);
 		return obj.orElseThrow(() ->  new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName(), null));
